@@ -17,7 +17,7 @@ const Input = ({
   const [erMessage, setErMessage] = useState('');
 
   const regUrl = /^((http|https|ftp):\/\/)?(([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+)/i;
-
+  
   const handler = (event: ChangeEvent<HTMLInputElement>) => {
     setCurrentValue(event.target.value);
   };
@@ -43,6 +43,9 @@ const Input = ({
       if (id === 'url' && !currentValue.match(regUrl)) {
         setValid(false);
         setErMessage('Некорректный формат url адреса');
+      } else {
+        setValid(true);
+        setErMessage('');
       }
     } else {
       setValid(true);

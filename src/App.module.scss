@@ -12,4 +12,18 @@
   padding: 20px;
   border: 1px solid black;
   border-radius: 5px;
+
+  & > .wrapperList {
+    width: 100%;
+
+    & > .list {
+      & > .item {
+        list-style: none;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 24px;
+      }
+    }
+  } 
 }
+
