@@ -3,8 +3,8 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 300px;
+  width: 500px;
+  height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -17,13 +17,40 @@
     width: 100%;
 
     & > .list {
+      margin-top: 20px;
       & > .item {
         list-style: none;
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 600;
         line-height: 24px;
+
+        & > img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    & > span {
+      & > div {
+        & > div {
+          & > div {
+            border: 1px solid black;
+            & > div {
+              & > div {
+                display: none;
+              }
+            }
+          }
+          & > div:last-child {
+            
+          }
+        }
       }
     }
   } 
 }
 
+.ant-tooltip-inner {
+  display: none;
+}

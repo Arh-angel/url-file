@@ -1,4 +1,7 @@
-import React, { useEffect, useId, useState } from 'react';
+import React, { ChangeEvent, useEffect, useId, useState } from 'react';
+import 'antd/dist/antd.css';
+import { Upload } from 'antd';
+import ImgCrop from 'antd-img-crop';
 
 import Button from './common/Btn';
 import Input from './common/Input';
@@ -7,7 +10,6 @@ import style from './App.module.scss';
 import axios from 'axios';
 import fileDownload from 'js-file-download';
 import ModalWindow from './common/ModalWindow';
-const fs = require('fs');
 
 const App = () => {
   const [inputValue, setInputValue] = useState('');
@@ -16,17 +18,36 @@ const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [flag, setFlag] = useState(false);
 
+  //==================================
+  const [fileList, setFileList] = useState<any[]>([]);
+
+  const onChange = ({ fileList: newFileList }:{fileList:any}) => {
+    setFileList(newFileList);
+  };
+
+  const onPreview = async (file:any) => {
+    let src = file.url;
+
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+  //==============================================
+
   const imgName = `${inputValue.split('/').pop()}`;
   const thereIsList = listNameFile.includes(imgName);
 
   const id = useId();
-
-  fs.readFile(`${inputValue}`, function (err:any, logData:any) {
-    if (err) throw err;
-    const img = logData;
-    console.log(img);
-    return img
-  });
 
   useEffect(() => {
     if (flag) {
@@ -42,7 +63,7 @@ const App = () => {
   }
 
   const handlerModalOpen = () => {
-    if(inputValue) {
+    if(inputValue && !thereIsList) {
       setModalOpen(!modalOpen);
     } else {
       setModalOpen(false);
@@ -97,8 +118,18 @@ const App = () => {
 
       <div className={style.wrapperList}>
         <ul className={style.list}>
-          {listNameFile.map((file) => <li key={id} className={style.item}>{file}</li>)} 
+            {listNameFile.map((file) => <li key={id} className={style.item}>{file}</li>)}
         </ul>
+        {listNameFile.length > 0 ? <ImgCrop rotate>
+          <Upload
+            listType="picture-card"
+            fileList={fileList}
+            onChange={onChange}
+            onPreview={onPreview}
+          >
+            {fileList.length < 5 && '+ Open image'}
+          </Upload>
+        </ImgCrop> : ''}
       </div>
       {modalOpen ? <ModalWindow text="Сохранить в загрузки?" titleBtnOne='Да' titleBtnTwo='Нет' handlerBtnOne={handlerFlag} handlerBtnTwo={handlerModalOpen} modalWindowOpen={handlerModalOpen} /> : ''}
     </div>
