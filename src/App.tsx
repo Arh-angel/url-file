@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useId, useState } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import 'antd/dist/antd.css';
 import { Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
@@ -18,7 +18,7 @@ const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [flag, setFlag] = useState(false);
 
-  //==================================
+  //================================== antd
   const [fileList, setFileList] = useState<any[]>([]);
 
   const onChange = ({ fileList: newFileList }:{fileList:any}) => {
@@ -107,8 +107,6 @@ const App = () => {
       console.log(error)
     }
   };
-
-  console.log(listNameFile);
 
   return (
     <div className={style.app}>
